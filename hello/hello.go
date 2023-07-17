@@ -12,11 +12,16 @@ func SayHello() {
 	log.SetFlags(0)
 
 	names := []string{"Gladys", "Samantha", "Darrin"}
+	hellosChan := make(chan string, len(names))
+	errorChan := make(chan error, 1)
 
-	messages, err := greetings.Hellos(names)
+	go greetings.Hellos(names, hellosChan, errorChan)
+	err := <-errorChan
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(messages)
+	for message := range hellosChan {
+		fmt.Println(message)
+	}
 }
