@@ -2,9 +2,10 @@ module my-little-gopher
 
 go 1.20
 
-require rsc.io/quote v1.5.2
+replace my-little-gopher/hello => ./hello
 
-require (
-	golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c // indirect
-	rsc.io/sampler v1.3.0 // indirect
-)
+replace my-little-gopher/greetings => ./greetings
+
+require my-little-gopher/hello v0.0.0-00010101000000-000000000000
+
+require my-little-gopher/greetings v0.0.0-00010101000000-000000000000 // indirect
