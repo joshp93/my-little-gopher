@@ -2,26 +2,26 @@ package greetings
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
+	"my-little-gopher/structs"
 )
 
-func Hello(name string) (string, error) {
+func Hello(name string) *structs.Greeting {
 	if name == "" {
-		return "", errors.New("empty name")
+		return structs.NewGreetingWithError(errors.New("empty name"))
 	}
-	message := fmt.Sprintf(randomFormat(), name)
-	return message, nil
+	greeting := structs.NewGreeting(randomFormat(), name)
+	return greeting
 }
 
 func Hellos(names []string, hellosChan chan<- string, errorChan chan<- error) {
 	for _, name := range names {
-		message, err := Hello(name)
-		if err != nil {
-			errorChan <- err
+		greeting := Hello(name)
+		if greeting.Err != nil {
+			errorChan <- greeting.Err
 			break
 		}
-		hellosChan <- message
+		hellosChan <- greeting.Message
 	}
 	close(errorChan)
 	close(hellosChan)

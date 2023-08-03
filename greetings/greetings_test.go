@@ -8,15 +8,15 @@ import (
 func TestHelloName(t *testing.T) {
 	name := "Gladys"
 	want := regexp.MustCompile(`\b` + name + `\b`)
-	msg, err := Hello(name)
-	if !want.MatchString(msg) || err != nil {
-		t.Fatalf(`Hello("Gladys") = %q, %v, want match for %#q, nil`, msg, err, want)
+	greeting := Hello(name)
+	if !want.MatchString(greeting.Message) || greeting.Err != nil {
+		t.Fatalf(`Hello("Gladys") = %q, %v, want match for %#q, nil`, greeting.Message, greeting.Err, want)
 	}
 }
 
 func TestHelloEmpty(t *testing.T) {
-	msg, err := Hello("")
-	if msg != "" || err == nil {
-		t.Fatalf(`Hello("") = %q, %v, want "", error`, msg, err)
+	greeting := Hello("")
+	if greeting.Message != "" || greeting.Err == nil {
+		t.Fatalf(`Hello("") = %q, %v, want "", error`, greeting.Message, greeting.Err)
 	}
 }
